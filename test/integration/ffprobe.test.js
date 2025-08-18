@@ -1,8 +1,9 @@
+const { describe, it } = require('node:test')
 const should = require('should/as-function')
 const ffprobe = require('../../lib/video/ffprobe')
 
 describe('ffprobe', () => {
-  it('reads the duration of a video', done => {
+  it('reads the duration of a video', (t, done) => {
     const name = 'test-data/input/videos/big_buck_bunny.mp4'
     ffprobe.getDuration(name, (err, duration) => {
       should(err).eql(null)
@@ -11,7 +12,7 @@ describe('ffprobe', () => {
     })
   })
 
-  it('does not take the frame count into account', done => {
+  it('does not take the frame count into account', (t, done) => {
     const name = 'test-data/input/videos/single-frame.mov'
     ffprobe.getDuration(name, (err, duration) => {
       should(err).eql(null)

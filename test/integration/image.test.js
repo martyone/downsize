@@ -1,8 +1,9 @@
+const { describe, it } = require('node:test')
 const should = require('should/as-function')
 const diff = require('./diff')
 
 describe('image', () => {
-  it('crops a JPEG file', done => {
+  it('crops a JPEG file', (t, done) => {
     diff.image({
       input: 'images/desk.jpg',
       expect: 'images/desk.thumb.jpg',
@@ -10,7 +11,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('resizes a JPEG file proportionally', done => {
+  it('resizes a JPEG file proportionally', (t, done) => {
     diff.image({
       input: 'images/desk.jpg',
       expect: 'images/desk.large.jpg',
@@ -18,7 +19,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('can set a custom output quality', done => {
+  it('can set a custom output quality', (t, done) => {
     diff.image({
       input: 'images/desk.jpg',
       expect: 'images/desk.low.jpg',
@@ -26,7 +27,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('create a cropped frame from an animated GIF', done => {
+  it('create a cropped frame from an animated GIF', (t, done) => {
     diff.image({
       input: 'images/simpsons.gif',
       expect: 'images/simpsons.cropped.gif',
@@ -37,7 +38,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('creates a resized frame from an animated GIF', done => {
+  it('creates a resized frame from an animated GIF', (t, done) => {
     diff.image({
       input: 'images/simpsons.gif',
       expect: 'images/simpsons.resized.gif',
@@ -47,7 +48,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('creates a resized animated GIF', done => {
+  it('creates a resized animated GIF', (t, done) => {
     diff.image({
       input: 'images/simpsons.gif',
       expect: 'images/simpsons.anim.gif',
@@ -58,7 +59,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('extract a frame from a transparent animated GIF', done => {
+  it('extract a frame from a transparent animated GIF', (t, done) => {
     diff.image({
       input: 'images/toad.gif',
       expect: 'images/toad.frame.gif',
@@ -66,7 +67,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('resizes a transparent animated GIF', done => {
+  it('resizes a transparent animated GIF', (t, done) => {
     diff.image({
       input: 'images/toad.gif',
       expect: 'images/toad.gif',
@@ -74,7 +75,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('converts a TIFF to JPEG', done => {
+  it('converts a TIFF to JPEG', (t, done) => {
     diff.image({
       input: 'images/desk.tiff',
       expect: 'images/desk.jpg',
@@ -82,7 +83,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('can add a watermark in the default location', done => {
+  it('can add a watermark in the default location', (t, done) => {
     diff.image({
       input: 'images/bike.jpg',
       expect: 'images/bike-wm-default.jpg',
@@ -94,7 +95,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('can add a watermark in a given location', done => {
+  it('can add a watermark in a given location', (t, done) => {
     diff.image({
       input: 'images/bike.jpg',
       expect: 'images/bike-wm-gravity.jpg',
@@ -107,7 +108,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('can add a tiled watermark', done => {
+  it('can add a tiled watermark', (t, done) => {
     diff.image({
       input: 'images/bike.jpg',
       expect: 'images/bike-wm-tiled.jpg',
@@ -120,7 +121,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('includes the watermark when resizing', done => {
+  it('includes the watermark when resizing', (t, done) => {
     diff.image({
       input: 'images/bike.jpg',
       expect: 'images/bike-wm-resize.jpg',
@@ -133,7 +134,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('ignores the watermark when cropping', done => {
+  it('ignores the watermark when cropping', (t, done) => {
     diff.image({
       input: 'images/bike.jpg',
       expect: 'images/bike-wm-crop.jpg',
@@ -147,7 +148,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('can add custom post-processing arguments', done => {
+  it('can add custom post-processing arguments', (t, done) => {
     diff.image({
       input: 'images/desk.jpg',
       expect: 'images/desk.processed.jpg',
@@ -157,7 +158,7 @@ describe('image', () => {
     }, done)
   })
 
-  it('removes all metadata by default', done => {
+  it('removes all metadata by default', (t, done) => {
     diff.metadata('image', {
       input: 'images/metadata.jpg',
       options: { height: 150 }
@@ -168,7 +169,7 @@ describe('image', () => {
     })
   })
 
-  it('can optionally keep metadata', done => {
+  it('can optionally keep metadata', (t, done) => {
     diff.metadata('image', {
       input: 'images/metadata.jpg',
       options: { height: 150, keepMetadata: true }
@@ -184,7 +185,7 @@ describe('image', () => {
   const ORIENTATIONS = [1, 2, 3, 4, 5, 6, 7, 8]
 
   ORIENTATIONS.forEach((orientation) => {
-    it(`reads rotation data (landscape ${orientation}) and generates a straight-up image`, done => {
+    it(`reads rotation data (landscape ${orientation}) and generates a straight-up image`, (t, done) => {
       diff.image({
         input: `rotations/landscape_${orientation}.jpg`,
         expect: `rotations/landscape_${orientation}.jpg`,
@@ -194,7 +195,7 @@ describe('image', () => {
   })
 
   ORIENTATIONS.forEach((orientation) => {
-    it(`reads rotation data (portrait ${orientation}) and generates a straight-up image`, done => {
+    it(`reads rotation data (portrait ${orientation}) and generates a straight-up image`, (t, done) => {
       diff.image({
         input: `rotations/portrait_${orientation}.jpg`,
         expect: `rotations/portrait_${orientation}.jpg`,

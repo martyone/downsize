@@ -1,3 +1,4 @@
+const { describe, it, afterEach } = require('node:test')
 const childProcess = require('node:child_process')
 const should = require('should/as-function')
 const async = require('async')
@@ -9,7 +10,7 @@ afterEach(() => {
 })
 
 describe('heic', () => {
-  it('calls gmagick and exiftool', done => {
+  it('calls gmagick and exiftool', (t, done) => {
     sinon.stub(childProcess, 'execFile').callsFake(fakeExecFile)
     heic.convert('input1.heic', err => {
       should(err).eql(null)
@@ -21,7 +22,7 @@ describe('heic', () => {
     })
   })
 
-  it('stops at the first failing call', done => {
+  it('stops at the first failing call', (t, done) => {
     sinon.stub(childProcess, 'execFile').callsFake(fakeExecFileFail)
     heic.convert('input2.heic', err => {
       should(err.message).eql('FAIL')
@@ -31,7 +32,7 @@ describe('heic', () => {
     })
   })
 
-  it('only processes each file once', done => {
+  it('only processes each file once', (t, done) => {
     sinon.stub(childProcess, 'execFile').callsFake(fakeExecFile)
     async.parallel([
       done => heic.convert('input3.heic', done),
@@ -42,7 +43,7 @@ describe('heic', () => {
     })
   })
 
-  it('keeps track of files already processed', done => {
+  it('keeps track of files already processed', (t, done) => {
     sinon.stub(childProcess, 'execFile').callsFake(fakeExecFile)
     async.parallel([
       done => heic.convert('input4.heic', done),

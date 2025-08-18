@@ -1,3 +1,4 @@
+const { describe, it } = require('node:test')
 const should = require('should/as-function')
 const sinon = require('sinon')
 const gmagick = require('../../lib/image/gmagick')

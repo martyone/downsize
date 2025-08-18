@@ -1,3 +1,4 @@
+const { describe, it } = require('node:test')
 const should = require('should/as-function')
 const ffargs = require('../../lib/video/ffargs')
 

@@ -1,3 +1,4 @@
+const { describe, it, beforeEach, afterEach } = require('node:test')
 const childProcess = require('node:child_process')
 const should = require('should/as-function')
 const ffmpeg = require('../../lib/video/ffmpeg')
@@ -13,7 +14,7 @@ describe('ffmpeg', () => {
     childProcess.spawn.restore()
   })
 
-  it('calls the callback when ffmpeg exits with code 0', done => {
+  it('calls the callback when ffmpeg exits with code 0', (t, done) => {
     const spawn = mockSpawn()
     childProcess.spawn.callsFake(spawn)
     spawn.setDefault(spawn.simple(0))
@@ -23,7 +24,7 @@ describe('ffmpeg', () => {
     })
   })
 
-  it('calls the callback with an error when ffmpeg exits with code 1', done => {
+  it('calls the callback with an error when ffmpeg exits with code 1', (t, done) => {
     const spawn = mockSpawn()
     childProcess.spawn.callsFake(spawn)
     spawn.setDefault(spawn.simple(1))
@@ -33,7 +34,7 @@ describe('ffmpeg', () => {
     })
   })
 
-  it('calls the callback when ffmpeg cannot be launched', done => {
+  it('calls the callback when ffmpeg cannot be launched', (t, done) => {
     const spawn = mockSpawn()
     childProcess.spawn.callsFake(spawn)
     spawn.setDefault(function (cb) {
@@ -45,7 +46,7 @@ describe('ffmpeg', () => {
     })
   })
 
-  it('reports progress when ffmpeg emits a duration update', done => {
+  it('reports progress when ffmpeg emits a duration update', (t, done) => {
     const spawn = mockSpawn()
     childProcess.spawn.callsFake(spawn)
     spawn.setDefault(function () {
@@ -59,7 +60,7 @@ describe('ffmpeg', () => {
     })
   })
 
-  it('can parse duration and progress even when lines are emitted in chunks', done => {
+  it('can parse duration and progress even when lines are emitted in chunks', (t, done) => {
     const spawn = mockSpawn()
     childProcess.spawn.callsFake(spawn)
     spawn.setDefault(function () {
@@ -75,7 +76,7 @@ describe('ffmpeg', () => {
     })
   })
 
-  it('reports progress even when duration and time are emitted together', done => {
+  it('reports progress even when duration and time are emitted together', (t, done) => {
     const spawn = mockSpawn()
     childProcess.spawn.callsFake(spawn)
     spawn.setDefault(function () {
@@ -91,7 +92,7 @@ describe('ffmpeg', () => {
     })
   })
 
-  it('reports progress throughout and finally terminates', done => {
+  it('reports progress throughout and finally terminates', (t, done) => {
     const percents = []
     const spawn = mockSpawn()
     childProcess.spawn.callsFake(spawn)

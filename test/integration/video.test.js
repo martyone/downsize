@@ -1,10 +1,11 @@
+const { describe, it } = require('node:test')
 const assert = require('node:assert')
 const should = require('should/as-function')
 const diff = require('./diff')
 const convert = require('../../lib/index')
 
 describe('video', () => {
-  it('can downsample a video for a smaller filesize', done => {
+  it('can downsample a video for a smaller filesize', (t, done) => {
     diff.video({
       input: 'videos/countdown.mp4',
       expect: 'videos/countdown-small.mp4',
@@ -12,7 +13,7 @@ describe('video', () => {
     }, done)
   })
 
-  it('can convert a video to webm', done => {
+  it('can convert a video to webm', (t, done) => {
     diff.video({
       input: 'videos/short.mp4',
       expect: 'videos/short.webm',
@@ -22,7 +23,7 @@ describe('video', () => {
     }, done)
   })
 
-  it('can convert to MP4 with a target bitrate', done => {
+  it('can convert to MP4 with a target bitrate', (t, done) => {
     diff.video({
       input: 'videos/countdown.mp4',
       expect: 'videos/countdown-bitrate.mp4',
@@ -33,7 +34,7 @@ describe('video', () => {
     }, done)
   })
 
-  it('can convert to WEBM with a target bitrate', done => {
+  it('can convert to WEBM with a target bitrate', (t, done) => {
     diff.video({
       input: 'videos/countdown.mp4',
       expect: 'videos/countdown-bitrate.webm',
@@ -44,7 +45,7 @@ describe('video', () => {
     }, done)
   })
 
-  it('can convert to MP4 with a target quality', done => {
+  it('can convert to MP4 with a target quality', (t, done) => {
     diff.video({
       input: 'videos/countdown.mp4',
       expect: 'videos/countdown-quality.mp4',
@@ -55,7 +56,7 @@ describe('video', () => {
     }, done)
   })
 
-  it('can convert to WEBM with a target quality', done => {
+  it('can convert to WEBM with a target quality', (t, done) => {
     diff.video({
       input: 'videos/countdown.mp4',
       expect: 'videos/countdown-quality.webm',
@@ -66,7 +67,7 @@ describe('video', () => {
     }, done)
   })
 
-  it('removes metadata by default', done => {
+  it('removes metadata by default', (t, done) => {
     diff.metadata('video', {
       input: 'videos/metadata.mp4',
       options: {}
@@ -78,7 +79,7 @@ describe('video', () => {
     })
   })
 
-  it('can optionally keep metadata', done => {
+  it('can optionally keep metadata', (t, done) => {
     diff.metadata('video', {
       input: 'videos/metadata.mp4',
       options: { keepMetadata: true }
@@ -90,7 +91,7 @@ describe('video', () => {
     })
   })
 
-  it('can report progress when processing videos', done => {
+  it('can report progress when processing videos', (t, done) => {
     const report = []
     const input = 'test-data/input/videos/big_buck_bunny.mp4'
     const actual = 'test-data/actual/videos/big_buck_bunny.mp4'

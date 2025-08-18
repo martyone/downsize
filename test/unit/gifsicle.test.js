@@ -1,3 +1,4 @@
+const { describe, it, beforeEach, afterEach } = require('node:test')
 const childProcess = require('node:child_process')
 const should = require('should/as-function')
 const sinon = require('sinon')
@@ -12,14 +13,14 @@ describe('gifsicle', () => {
     childProcess.execFile.restore()
   })
 
-  it('throws if the image is not a GIF', done => {
+  it('throws if the image is not a GIF', (t, done) => {
     should(() => {
       gifsicle.createAnimatedGif('source.gif', 'target.jpg', {}, () => {})
     }).throw(/extension/)
     done()
   })
 
-  it('cannot crop an animated GIF', done => {
+  it('cannot crop an animated GIF', (t, done) => {
     const opts = { height: 100, width: 100 }
     should(() => {
       gifsicle.createAnimatedGif('source.gif', 'target.gif', opts, () => {})
@@ -27,7 +28,7 @@ describe('gifsicle', () => {
     done()
   })
 
-  it('calls Gifsicle', done => {
+  it('calls Gifsicle', (t, done) => {
     const opts = { width: 100 }
     gifsicle.createAnimatedGif('source.gif', 'target.gif', opts, err => {
       should(err).eql(undefined)
@@ -41,7 +42,7 @@ describe('gifsicle', () => {
     })
   })
 
-  it('resizes to a given width', done => {
+  it('resizes to a given width', (t, done) => {
     const opts = { width: 100 }
     gifsicle.createAnimatedGif('source.gif', 'target.gif', opts, err => {
       should(err).eql(undefined)
@@ -53,7 +54,7 @@ describe('gifsicle', () => {
     })
   })
 
-  it('resizes to a given height', done => {
+  it('resizes to a given height', (t, done) => {
     const opts = { height: 100 }
     gifsicle.createAnimatedGif('source.gif', 'target.gif', opts, err => {
       should(err).eql(undefined)

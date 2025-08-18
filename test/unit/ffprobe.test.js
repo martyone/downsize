@@ -1,3 +1,4 @@
+const { describe, it, afterEach } = require('node:test')
 const childProcess = require('node:child_process')
 const should = require('should/as-function')
 const sinon = require('sinon')
@@ -8,7 +9,7 @@ afterEach(() => {
 })
 
 describe('ffprobe', () => {
-  it('parses the FFProbe output rounded to 1 digit', done => {
+  it('parses the FFProbe output rounded to 1 digit', (t, done) => {
     sinon.stub(childProcess, 'execFile').yields(undefined, '12.3456')
     ffprobe.getDuration('video.mp4', (err, duration) => {
       should(err).eql(null)
@@ -17,7 +18,7 @@ describe('ffprobe', () => {
     })
   })
 
-  it('fail if FFProbe cannot be executed', done => {
+  it('fail if FFProbe cannot be executed', (t, done) => {
     sinon.stub(childProcess, 'execFile').yields(new Error('Not found'))
     ffprobe.getDuration('video.mp4', (err, duration) => {
       should(err).be.instanceOf(Error)
@@ -25,7 +26,7 @@ describe('ffprobe', () => {
     })
   })
 
-  it('handles unexpected FFProbe output', done => {
+  it('handles unexpected FFProbe output', (t, done) => {
     sinon.stub(childProcess, 'execFile').yields(undefined, 'unexpected')
     ffprobe.getDuration('video.mp4', (err, duration) => {
       should(err).be.instanceOf(Error)
