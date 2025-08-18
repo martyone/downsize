@@ -1,6 +1,6 @@
 const { describe, it, beforeEach, afterEach } = require('node:test')
+const assert = require('node:assert/strict')
 const childProcess = require('node:child_process')
-const should = require('should/as-function')
 const sinon = require('sinon')
 const gifsicle = require('../../lib/image/gifsicle')
 
@@ -14,30 +14,30 @@ describe('gifsicle', () => {
   })
 
   it('throws if the image is not a GIF', (t, done) => {
-    should(() => {
+    assert.throws(() => {
       gifsicle.createAnimatedGif('source.gif', 'target.jpg', {}, () => {})
-    }).throw(/extension/)
+    }, /extension/)
     done()
   })
 
   it('cannot crop an animated GIF', (t, done) => {
     const opts = { height: 100, width: 100 }
-    should(() => {
+    assert.throws(() => {
       gifsicle.createAnimatedGif('source.gif', 'target.gif', opts, () => {})
-    }).throw(/crop/)
+    }, /crop/)
     done()
   })
 
   it('calls Gifsicle', (t, done) => {
     const opts = { width: 100 }
     gifsicle.createAnimatedGif('source.gif', 'target.gif', opts, err => {
-      should(err).eql(undefined)
-      should(childProcess.execFile.callCount).eql(1)
+      assert.equal(err, undefined)
+      assert.equal(childProcess.execFile.callCount, 1)
       const call = childProcess.execFile.args[0]
       const program = call[0]
       const args = call[1].join(' ')
-      should(program).eql('gifsicle')
-      should(args).match(/-o target\.gif source\.gif/)
+      assert.equal(program, 'gifsicle')
+      assert.match(args, /-o target\.gif source\.gif/)
       done()
     })
   })
@@ -45,11 +45,11 @@ describe('gifsicle', () => {
   it('resizes to a given width', (t, done) => {
     const opts = { width: 100 }
     gifsicle.createAnimatedGif('source.gif', 'target.gif', opts, err => {
-      should(err).eql(undefined)
-      should(childProcess.execFile.callCount).eql(1)
+      assert.equal(err, undefined)
+      assert.equal(childProcess.execFile.callCount, 1)
       const call = childProcess.execFile.args[0]
       const args = call[1].join(' ')
-      should(args).match(/--resize-fit 100x_/)
+      assert.match(args, /--resize-fit 100x_/)
       done()
     })
   })
@@ -57,11 +57,11 @@ describe('gifsicle', () => {
   it('resizes to a given height', (t, done) => {
     const opts = { height: 100 }
     gifsicle.createAnimatedGif('source.gif', 'target.gif', opts, err => {
-      should(err).eql(undefined)
-      should(childProcess.execFile.callCount).eql(1)
+      assert.equal(err, undefined)
+      assert.equal(childProcess.execFile.callCount, 1)
       const call = childProcess.execFile.args[0]
       const args = call[1].join(' ')
-      should(args).match(/--resize-fit _x100/)
+      assert.match(args, /--resize-fit _x100/)
       done()
     })
   })

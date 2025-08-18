@@ -1,6 +1,6 @@
 const { describe, it, beforeEach, afterEach } = require('node:test')
+const assert = require('node:assert/strict')
 const childProcess = require('node:child_process')
-const should = require('should/as-function')
 const ffmpeg = require('../../lib/video/ffmpeg')
 const mockSpawn = require('mock-spawn')
 const sinon = require('sinon')
@@ -19,7 +19,7 @@ describe('ffmpeg', () => {
     childProcess.spawn.callsFake(spawn)
     spawn.setDefault(spawn.simple(0))
     ffmpeg.exec(['--fake'], err => {
-      should(err).eql(null)
+      assert.equal(err, null)
       done()
     })
   })
@@ -29,7 +29,7 @@ describe('ffmpeg', () => {
     childProcess.spawn.callsFake(spawn)
     spawn.setDefault(spawn.simple(1))
     ffmpeg.exec(['--fake'], err => {
-      should(err.message).eql('ffmpeg exited with code 1')
+      assert.equal(err.message, 'ffmpeg exited with code 1')
       done()
     })
   })
@@ -41,7 +41,7 @@ describe('ffmpeg', () => {
       this.emit('error', new Error('spawn ENOENT'))
     })
     ffmpeg.exec(['--fake'], err => {
-      should(err.message).eql('spawn ENOENT')
+      assert.equal(err.message, 'spawn ENOENT')
       done()
     })
   })
@@ -55,7 +55,7 @@ describe('ffmpeg', () => {
     })
     const progress = ffmpeg.exec(['--fake'])
     progress.on('progress', percent => {
-      should(percent).eql(50)
+      assert.equal(percent, 50)
       done()
     })
   })
@@ -71,7 +71,7 @@ describe('ffmpeg', () => {
     })
     const progress = ffmpeg.exec(['--fake'])
     progress.on('progress', percent => {
-      should(percent).eql(50)
+      assert.equal(percent, 50)
       done()
     })
   })
@@ -87,7 +87,7 @@ describe('ffmpeg', () => {
     })
     const progress = ffmpeg.exec(['--fake'])
     progress.on('progress', percent => {
-      should(percent).eql(50)
+      assert.equal(percent, 50)
       done()
     })
   })
@@ -105,8 +105,8 @@ describe('ffmpeg', () => {
       callback(0) // eslint-disable-line n/no-callback-literal
     })
     const progress = ffmpeg.exec(['--fake'], err => {
-      should(err).eql(null)
-      should(percents).eql([25, 50, 75, 100])
+      assert.equal(err, null)
+      assert.deepEqual(percents, [25, 50, 75, 100])
       done()
     })
     progress.on('progress', percent => percents.push(percent))

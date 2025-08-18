@@ -1,6 +1,5 @@
 const { describe, it } = require('node:test')
-const assert = require('node:assert')
-const should = require('should/as-function')
+const assert = require('node:assert/strict')
 const diff = require('./diff')
 const convert = require('../../lib/index')
 
@@ -72,9 +71,9 @@ describe('video', () => {
       input: 'videos/metadata.mp4',
       options: {}
     }, (err, fields) => {
-      should(err).be.null()
-      should(fields).not.have.propertyByPath('QuickTime', 'Title')
-      should(fields).not.have.propertyByPath('QuickTime', 'GPSCoordinates')
+      assert.equal(err, null)
+      assert.equal(fields.QuickTime.Title, undefined)
+      assert.equal(fields.QuickTime.GPSCoordinates, undefined)
       done()
     })
   })
@@ -84,9 +83,9 @@ describe('video', () => {
       input: 'videos/metadata.mp4',
       options: { keepMetadata: true }
     }, (err, fields) => {
-      should(err).be.null()
-      should(fields).have.propertyByPath('QuickTime', 'Title').eql('Cool video')
-      should(fields).have.propertyByPath('QuickTime', 'GPSCoordinates').eql('60 deg 0\' 0.00" N, 10 deg 0\' 0.00" E, 0 m Above Sea Level')
+      assert.equal(err, null)
+      assert.equal(fields.QuickTime.Title, 'Cool video')
+      assert.equal(fields.QuickTime.GPSCoordinates, '60 deg 0\' 0.00" N, 10 deg 0\' 0.00" E, 0 m Above Sea Level')
       done()
     })
   })

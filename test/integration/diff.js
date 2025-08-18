@@ -1,6 +1,6 @@
 const childProcess = require('node:child_process')
+const assert = require('node:assert/strict')
 const _ = require('lodash')
-const should = require('should/as-function')
 const gm = require('gm')
 const convert = require('../../lib/index')
 
@@ -66,13 +66,13 @@ function compareImage (expected, actual, done) {
 function compareMetadata (expected, actual, fields) {
   const expectedFields = _.pick(exiftool(expected), fields)
   const actualFields = _.pick(exiftool(actual), fields)
-  should(actualFields).eql(expectedFields)
+  assert.deepEqual(actualFields, expectedFields)
 }
 
 function compareVisual (expected, actual, tolerance, done) {
   gm.compare(expected, actual, tolerance, (err, similar, equality, raw) => {
     if (err) throw err
-    should(similar).eql(true, `
+    assert.equal(similar, true, `
       Equality > tolerance (${equality.toFixed(5)} > ${tolerance})
       Raw comparison: ${raw}
     `)

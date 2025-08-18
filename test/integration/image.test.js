@@ -1,5 +1,5 @@
 const { describe, it } = require('node:test')
-const should = require('should/as-function')
+const assert = require('node:assert/strict')
 const diff = require('./diff')
 
 describe('image', () => {
@@ -163,8 +163,10 @@ describe('image', () => {
       input: 'images/metadata.jpg',
       options: { height: 150 }
     }, (err, fields) => {
-      should(err).be.undefined()
-      should(fields).not.have.properties(['EXIF', 'XMP', 'IPTC'])
+      assert.equal(err, undefined)
+      assert.equal(fields.EXIF, undefined)
+      assert.equal(fields.XMP, undefined)
+      assert.equal(fields.IPTC, undefined)
       done()
     })
   })
@@ -174,10 +176,10 @@ describe('image', () => {
       input: 'images/metadata.jpg',
       options: { height: 150, keepMetadata: true }
     }, (err, fields) => {
-      should(err).be.undefined()
-      should(fields).have.propertyByPath('EXIF', 'ImageDescription').eql('Red bike')
-      should(fields).have.propertyByPath('XMP', 'Subject').eql('Bike')
-      should(fields).have.propertyByPath('IPTC', 'Keywords').eql('bike')
+      assert.equal(err, undefined)
+      assert.equal(fields.EXIF.ImageDescription, 'Red bike')
+      assert.equal(fields.XMP.Subject, 'Bike')
+      assert.equal(fields.IPTC.Keywords, 'bike')
       done()
     })
   })
