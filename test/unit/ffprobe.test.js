@@ -1,16 +1,19 @@
-const { describe, it, afterEach } = require('node:test')
+const { describe, it, afterEach, mock } = require('node:test')
 const assert = require('node:assert/strict')
 const childProcess = require('node:child_process')
-const sinon = require('sinon')
 const ffprobe = require('../../lib/video/ffprobe')
 
+function mockExecFile (err, data) {
+  return (cmd, args, cb) => setImmediate(() => cb(err, data))
+}
+
 afterEach(() => {
-  sinon.restore()
+  mock.reset()
 })
 
 describe('ffprobe', () => {
   it('parses the FFProbe output rounded to 1 digit', (t, done) => {
-    sinon.stub(childProcess, 'execFile').yields(undefined, '12.3456')
+    mock.method(childProcess, 'execFile', mockExecFile(undefined, '12.3456'))
     ffprobe.getDuration('video.mp4', (err, duration) => {
       assert.equal(err, null)
       assert.equal(duration, 12.3)
@@ -19,7 +22,7 @@ describe('ffprobe', () => {
   })
 
   it('fail if FFProbe cannot be executed', (t, done) => {
-    sinon.stub(childProcess, 'execFile').yields(new Error('Not found'))
+    mock.method(childProcess, 'execFile', mockExecFile(new Error('Not found')))
     ffprobe.getDuration('video.mp4', (err, duration) => {
       assert.equal(err instanceof Error, true)
       done()
@@ -27,7 +30,7 @@ describe('ffprobe', () => {
   })
 
   it('handles unexpected FFProbe output', (t, done) => {
-    sinon.stub(childProcess, 'execFile').yields(undefined, 'unexpected')
+    mock.method(childProcess, 'execFile', mockExecFile(undefined, 'unexpected'))
     ffprobe.getDuration('video.mp4', (err, duration) => {
       assert.equal(err instanceof Error, true)
       done()
